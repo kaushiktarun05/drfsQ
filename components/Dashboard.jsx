@@ -4,8 +4,8 @@ import MetricsSection from "./MetricsSection";
 import DroneInfoSection from "./DroneInfoSection";
 import WorldMapSection from "./WorldMapSection";
 import OptionsListSection from "./OptionsListSection";
+import LineChartSection from "./LineChartSection";
 import PieChartSection from "./PieChartSection";
-import LinesChartSection from "./LinesChartSection";
 
 function Dashboard() {
   return (
@@ -14,7 +14,7 @@ function Dashboard() {
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet"
       />
-      <main className="p-5 min-h-screen bg-zinc-900">
+      <main className="p-5 min-h-screen bg-black">
         <header className="mb-5">
           <MetricsSection />
           <DroneInfoSection />
@@ -23,7 +23,7 @@ function Dashboard() {
           <WorldMapSection />
           <OptionsListSection />
           <PieChartSection />
-          <LinesChartSection />
+          <LineChartSection />
         </section>
       </main>
     </>

@@ -1,10 +1,6 @@
 import React from "react";
 
-function SectionHeader({
-  title,
-  subtitle = "May to June 2021",
-  showActions = true,
-}) {
+function SectionHeader({ title, subtitle, showActions = false }) {
   return (
     <header className="flex justify-between items-center pb-5 border-b border-solid border-b-white">
       <h2 className="text-xl font-semibold text-white">{title}</h2>

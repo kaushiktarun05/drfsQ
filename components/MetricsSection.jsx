@@ -2,7 +2,7 @@ import React from "react";
 
 function MetricCard({ value, label }) {
   return (
-    <article className="p-5 rounded-2xl shadow-sm max-md:flex-[1_1_calc(50%_-_20px)] max-sm:flex-[1_1_100%]">
+    <article className="p-5 rounded-2xl shadow-sm bg-zinc-900 max-md:flex-[1_1_calc(50%_-_20px)] max-sm:flex-[1_1_100%]">
       <h2 className="mb-2 text-2xl font-semibold text-white">{value}</h2>
       <p className="text-sm text-zinc-300">{label}</p>
     </article>
