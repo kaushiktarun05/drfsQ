@@ -5,161 +5,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Upload</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <title>DroneforensiQ - Upload</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js"></script>
     
     <style>
-        /* Dark Mode Styles */
-        body {
-            height: 100vh;
-            background: #121212; /* Deep Black Background */
-            color: #e0e0e0; /* Light Grey Text */
-        }
-
-        .container {
-            max-width: 500px;
-            background: #1e1e1e; /* Dark Grey Background */
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
-
-        .container h2 {
-            color: #bb86fc; /* Soft Purple */
-            font-weight: bold;
-        }
-
-        .form-control {
-            background: #292929; /* Dark Input Field */
-            border: 2px solid #444; /* Subtle Border */
-            color: #e0e0e0;
-        }
-
-        .form-control:focus {
-            background: #333;
-            border-color: #bb86fc; /* Purple Glow */
-            box-shadow: 0px 0px 10px rgba(187, 134, 252, 0.8);
-        }
-
-        .btn-primary {
-            background-color: #bb86fc;
-            border-color: #bb86fc;
-            color: #121212;
-            transition: 0.3s;
-        }
-
-        .btn-primary:hover {
-            background-color: #9b59b6;
-            border-color: #9b59b6;
-        }
-
-        .btn-secondary {
-            background-color: #03dac6;
-            border-color: #03dac6;
-            color: #121212;
-        }
-
-        .btn-secondary:hover {
-            background-color: #00bfa5;
-            border-color: #00bfa5;
-        }
-
-        .flash-container {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 500px;
-            z-index: 1050;
-        }
-
-        .alert {
-            background-color: #292929;
-            border-left: 5px solid #bb86fc;
-            color: #e0e0e0;
-            border-radius: 8px;
-            box-shadow: 0px 2px 10px rgba(187, 134, 252, 0.2);
-        }
-
-        .btn-close {
-            filter: invert(1);
-        }
-
-        #droneContainer{
+        .hero-section {
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem 0;
         }
 
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { filter: brightness(1); }
+            to { filter: brightness(1.2); }
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .upload-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+
+        .upload-container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .upload-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .file-input {
+            width: 100%;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            color: white;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .file-input:hover {
+            border-color: #4facfe;
+            background: rgba(79, 172, 254, 0.1);
+            transform: scale(1.02);
+        }
+
+        .file-input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 20px rgba(79, 172, 254, 0.3);
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 3rem;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .upload-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .upload-btn:hover::before {
+            left: 100%;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(79, 172, 254, 0.4);
+        }
+
+        .drone-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 200px;
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #4facfe;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .upload-container {
+                margin: 1rem;
+                padding: 2rem;
+            }
+            
+            .drone-container {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
-    
-
-    <!-- Flash Message Container -->
-    <!-- Upload Form Container -->
-    <div id="droneContainer"></div>
-    <div class="container">
-        <h2>📂 Upload a File</h2>
-        <form method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <input class="form-control" type="file" name="file" accept=".dat" required>
+    <div class="hero-section">
+        <!-- Background Drone Animation -->
+        <div class="drone-container" id="droneContainer"></div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title fade-in">DroneforensiQ</h1>
+            <p class="hero-subtitle slide-up">Advanced Drone Flight Data Analysis Platform</p>
+            
+            <div class="upload-container scale-in">
+                <h2 class="upload-title">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    Upload Flight Data
+                </h2>
+                
+                <form method="POST" enctype="multipart/form-data" class="upload-form">
+                    <div class="file-input-wrapper">
+                        <input class="file-input" type="file" name="file" accept=".dat" required 
+                               placeholder="Select your .DAT file">
+                    </div>
+                    <button class="upload-btn" type="submit">
+                        <i class="fas fa-rocket me-2"></i>
+                        Process Flight Data
+                    </button>
+                </form>
             </div>
-            <button class="btn btn-primary" type="submit">Upload</button>
-        </form>
+            
+            <!-- Features Grid -->
+            <div class="features-grid scroll-reveal">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Forensic Analysis</h3>
+                    <p class="feature-description">Professional-grade tools for digital forensics and incident response</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Real-time Analytics</h3>
+                    <p class="feature-description">Interactive dashboards with comprehensive flight data visualization</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Flight Mapping</h3>
+                    <p class="feature-description">Detailed GPS tracking and flight path reconstruction</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Automatically hide flash messages after 3 seconds
-        setTimeout(() => {
-            let alerts = document.querySelectorAll('.alert');
-            alerts.forEach(alert => {
-                let bsAlert = new bootstrap.Alert(alert);
-                bsAlert.close();
-            });
-        }, 3000);
-    </script>
-    <script>
-        // Set up scene, camera, and renderer
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        // renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setSize(500,200);
-        document.getElementById('droneContainer').appendChild(renderer.domElement);
-
-        // Add lighting
-        const light = new THREE.AmbientLight(0xffffff, 1.5);
-        scene.add(light);
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-        directionalLight.position.set(1, 1, 1);
-        scene.add(directionalLight);
-
-        let droneModel = null;
-
-        // Load Drone Model
-        const loader = new THREE.GLTFLoader();
-        loader.load("{{url_for('static', filename='models/drone_design.glb')}}", function (gltf) {
-            droneModel = gltf.scene;
-            droneModel.scale.set(1.5, 1.5, 1.5); // Adjust model size
-            droneModel.position.set(0, 0, 0); // Center the model
-            droneModel.rotation.x = -0.3; // Initial tilt forward (nose down)
-            scene.add(droneModel);
-        }, undefined, function (error) {
-            console.error('Error loading model:', error);
-        });
-
-        camera.position.set(0, 0, 3); // Adjust camera to fit the model
-
-        // Cursor tracking (left-right and up-down)
+        // Enhanced Drone Animation
+        let scene, camera, renderer, droneModel;
         let mouseX = 0, mouseY = 0;
-        let targetRotationY = 0, targetRotationX = -0.3; // Start with initial tilt
+        let targetRotationY = 0, targetRotationX = -0.3;
 
+        function initDroneAnimation() {
+            // Set up scene, camera, and renderer
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(20, 300 / 200, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(300, 200);
+            renderer.setClearColor(0x000000, 0);
+            
+            const container = document.getElementById('droneContainer');
+            if (container) {
+                container.appendChild(renderer.domElement);
+            }
+
+            // Enhanced lighting
+            const ambientLight = new THREE.AmbientLight(0x4facfe, 0.6);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0x00f2fe, 1);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+
+            // Load Drone Model
+            const loader = new THREE.GLTFLoader();
+            loader.load("{{url_for('static', filename='models/drone_design.glb')}}", function (gltf) {
+                droneModel = gltf.scene;
+                droneModel.scale.set(2, 2, 2);
+                droneModel.position.set(0, 0, 0);
+                droneModel.rotation.x = -0.3;
+                scene.add(droneModel);
+                
+                // Add subtle glow effect
+                droneModel.traverse((child) => {
+                    if (child.isMesh) {
+                        child.material.emissive = new THREE.Color(0x001122);
+                        child.material.emissiveIntensity = 0.1;
+                    }
+                });
+            }, undefined, function (error) {
+                console.error('Error loading model:', error);
+            });
+
+            camera.position.set(0, 0, 4);
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            if (droneModel) {
+                // Smooth rotation following mouse
+                droneModel.rotation.y += (targetRotationY - droneModel.rotation.y) * 0.05;
+                droneModel.rotation.x += (targetRotationX - droneModel.rotation.x) * 0.05;
+                
+                // Subtle floating animation
+                droneModel.position.y = Math.sin(Date.now() * 0.001) * 0.1;
+                
+                // Gentle rotation
+                droneModel.rotation.z += 0.002;
+            }
+            
+            renderer.render(scene, camera);
+        }
+
+        // Enhanced mouse tracking
         window.addEventListener("mousemove", (event) => {
             const halfWidth = window.innerWidth / 2;
             const halfHeight = window.innerHeight / 2;
@@ -167,26 +343,70 @@
             mouseX = (event.clientX - halfWidth) / halfWidth;
             mouseY = (event.clientY - halfHeight) / halfHeight;
 
-            targetRotationY = mouseX * 1.2;
-            targetRotationX = mouseY * 0.8 + 0.5; // Maintain initial tilt
+            targetRotationY = mouseX * 0.5;
+            targetRotationX = mouseY * 0.3 - 0.3;
         });
 
-        function animate() {
-            requestAnimationFrame(animate);
-            if (droneModel) {
-                droneModel.rotation.y += (targetRotationY - droneModel.rotation.y) * 0.08;
-                droneModel.rotation.x += (targetRotationX - droneModel.rotation.x) * 0.08;
+        // File input enhancement
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.querySelector('.file-input');
+            const uploadBtn = document.querySelector('.upload-btn');
+            
+            if (fileInput) {
+                fileInput.addEventListener('change', function(e) {
+                    if (e.target.files.length > 0) {
+                        const fileName = e.target.files[0].name;
+                        fileInput.style.borderColor = '#4facfe';
+                        fileInput.style.background = 'rgba(79, 172, 254, 0.1)';
+                        
+                        // Add file name display
+                        const fileInfo = document.createElement('div');
+                        fileInfo.className = 'file-info';
+                        fileInfo.innerHTML = `<i class="fas fa-file me-2"></i>${fileName}`;
+                        fileInfo.style.cssText = `
+                            color: #4facfe;
+                            margin-top: 1rem;
+                            font-size: 0.9rem;
+                            animation: slideUp 0.3s ease;
+                        `;
+                        
+                        const existingInfo = fileInput.parentNode.querySelector('.file-info');
+                        if (existingInfo) existingInfo.remove();
+                        fileInput.parentNode.appendChild(fileInfo);
+                    }
+                });
             }
-            renderer.render(scene, camera);
-        }
-        animate();
 
-        // Responsive resizing
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            // Enhanced form submission
+            const form = document.querySelector('.upload-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    if (uploadBtn) {
+                        uploadBtn.innerHTML = '<div class="loading-spinner"></div>';
+                        uploadBtn.disabled = true;
+                    }
+                });
+            }
         });
+
+        // Initialize drone animation
+        initDroneAnimation();
+
+        // Scroll reveal animation
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.scroll-reveal');
+            reveals.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('revealed');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', revealOnScroll);
+        document.addEventListener('DOMContentLoaded', revealOnScroll);
     </script>
 
 </body>

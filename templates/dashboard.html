@@ -6,192 +6,503 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drone Dashboard</title>
+    <title>Drone Dashboard - DroneforensiQ</title>
 
     <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <style>
-        body {
-            background-color: #121212;
-            color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
+        .dashboard-hero {
             text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
         }
 
-        h1 {
-            color: #00eaff;
-            text-shadow: 0px 0px 10px rgba(0, 234, 255, 0.8);
+        .dashboard-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            animation: titlePulse 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titlePulse {
+            from { filter: brightness(1); }
+            to { filter: brightness(1.3); }
+        }
+
+        .dashboard-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 300;
         }
 
         .dashboard-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            max-width: 1200px;
-            margin: auto;
-            padding: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
         }
 
         .full-width {
             grid-column: span 2;
         }
 
-        .chart-container {
-            background: #1e1e1e;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 20px rgba(0, 234, 255, 0.3);
-            height: 500px;
+        .chart-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .chart-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .chart-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .chart-header {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
         }
 
-        .chart-container h2 {
-            color: #00eaff;
-            text-shadow: 0px 0px 5px rgba(0, 234, 255, 0.8);
+        .chart-icon {
+            font-size: 2rem;
+            color: #4facfe;
+            animation: iconFloat 3s ease-in-out infinite;
         }
 
-        .chart-container div {
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            margin: 0;
+        }
+
+        .chart-container {
+            height: 400px;
             width: 100%;
-            height: 100%;
+            border-radius: 15px;
+            overflow: hidden;
         }
 
         #map {
             height: 500px;
             width: 100%;
-            border-radius: 8px;
+            border-radius: 20px;
             overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 25px;
+            z-index: 10;
         }
 
-        ::-webkit-scrollbar-track {
-            background: #1e1e1e;
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #4facfe;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: #00eaff;
-            border-radius: 10px;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
+        .data-indicator {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(79, 172, 254, 0.2);
+            color: #4facfe;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .data-indicator.live {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .full-width {
+                grid-column: span 1;
+            }
+            
+            .dashboard-title {
+                font-size: 2.5rem;
+            }
+            
+            .chart-container {
+                height: 300px;
+            }
+            
+            #map {
+                height: 400px;
+            }
+        }
     </style>
 </head>
 
 <body>
-
-    <h1>🚀 Drone Dashboard</h1>
+    <div class="dashboard-hero">
+        <h1 class="dashboard-title fade-in">🚀 Flight Analytics Dashboard</h1>
+        <p class="dashboard-subtitle slide-up">Real-time drone flight data analysis and visualization</p>
+    </div>
 
     <div class="dashboard-container">
-        <div class="full-width">
-            <h2>📍 Flight Path</h2>
+        <!-- Flight Path Map -->
+        <div class="chart-card full-width scroll-reveal">
+            <div class="data-indicator live">
+                <i class="fas fa-circle me-1"></i>LIVE DATA
+            </div>
+            <div class="chart-header">
+                <i class="fas fa-map-marked-alt chart-icon"></i>
+                <h2 class="chart-title">Flight Path Visualization</h2>
+            </div>
             <div id="map"></div>
         </div>
-        <div class="chart-container">
-            <h2>🔋 Battery Status</h2>
-            <div id="batteryChart"></div>
+
+        <!-- Battery Status -->
+        <div class="chart-card scroll-reveal">
+            <div class="chart-header">
+                <i class="fas fa-battery-three-quarters chart-icon"></i>
+                <h2 class="chart-title">Battery Status</h2>
+            </div>
+            <div class="chart-container" id="batteryChart"></div>
         </div>
-        <div class="chart-container">
-            <h2>📏 Altitude & Speed</h2>
-            <div id="altitudeChart"></div>
+
+        <!-- Altitude & Speed -->
+        <div class="chart-card scroll-reveal">
+            <div class="chart-header">
+                <i class="fas fa-chart-line chart-icon"></i>
+                <h2 class="chart-title">Altitude & Speed</h2>
+            </div>
+            <div class="chart-container" id="altitudeChart"></div>
         </div>
-        <div class="chart-container">
-            <h2>📡 IMU Sensor Data</h2>
-            <div id="imuChart"></div>
+
+        <!-- IMU Sensor Data -->
+        <div class="chart-card scroll-reveal">
+            <div class="chart-header">
+                <i class="fas fa-satellite-dish chart-icon"></i>
+                <h2 class="chart-title">IMU Sensor Data</h2>
+            </div>
+            <div class="chart-container" id="imuChart"></div>
         </div>
-        <div class="chart-container">
-            <h2>🎥 Gimbal Angles</h2>
-            <div id="gimbalChart"></div>
+
+        <!-- Gimbal Angles -->
+        <div class="chart-card scroll-reveal">
+            <div class="chart-header">
+                <i class="fas fa-video chart-icon"></i>
+                <h2 class="chart-title">Gimbal Orientation</h2>
+            </div>
+            <div class="chart-container" id="gimbalChart"></div>
         </div>
-        <div class="chart-container">
-            <h2>⚡ Current Consumption</h2>
-            <div id="currentChart"></div>
+
+        <!-- Current Consumption -->
+        <div class="chart-card scroll-reveal">
+            <div class="chart-header">
+                <i class="fas fa-bolt chart-icon"></i>
+                <h2 class="chart-title">Current Consumption</h2>
+            </div>
+            <div class="chart-container" id="currentChart"></div>
         </div>
-        <div class="chart-container">
-            <h2>🔌 Voltage Levels</h2>
-            <div id="voltageChart"></div>
+
+        <!-- Voltage Levels -->
+        <div class="chart-card scroll-reveal">
+            <div class="chart-header">
+                <i class="fas fa-plug chart-icon"></i>
+                <h2 class="chart-title">Voltage Levels</h2>
+            </div>
+            <div class="chart-container" id="voltageChart"></div>
         </div>
-        <div class="chart-container">
-            <h2>🌡️ Battery Temperature</h2>
-            <div id="temperatureChart"></div>
+
+        <!-- Battery Temperature -->
+        <div class="chart-card scroll-reveal">
+            <div class="chart-header">
+                <i class="fas fa-thermometer-half chart-icon"></i>
+                <h2 class="chart-title">Battery Temperature</h2>
+            </div>
+            <div class="chart-container" id="temperatureChart"></div>
         </div>
     </div>
 
     <script>
+        // Enhanced data fetching with loading states
         async function fetchData() {
             try {
+                // Show loading overlays
+                showLoadingOverlays();
+                
                 const response = await fetch('/api/data');
                 const data = await response.json();
-                console.log("API Data:", data); // Debugging: See if data is correct
+                console.log("API Data:", data);
 
-                if (data.error) return alert("No data available.");
+                if (data.error) {
+                    hideLoadingOverlays();
+                    showErrorState("No data available.");
+                    return;
+                }
 
-                plotMap(data.latitude, data.longitude);
-                plotBatteryChart(data.battery);
-                plotAltitudeChart(data.altitude, data.velN, data.velE, data.velD);
-                plotIMUChart(data.gyroX, data.gyroY, data.gyroZ);
-                plotGimbalChart(data.gimbal_roll, data.gimbal_pitch, data.gimbal_yaw);
-                plotCurrentChart(data.current);
-                plotVoltageChart(data.voltage);
-                plotTemperatureChart(data.temperature);
+                // Animate data loading
+                await Promise.all([
+                    plotMap(data.latitude, data.longitude),
+                    plotBatteryChart(data.battery),
+                    plotAltitudeChart(data.altitude, data.velN, data.velE, data.velD),
+                    plotIMUChart(data.gyroX, data.gyroY, data.gyroZ),
+                    plotGimbalChart(data.gimbal_roll, data.gimbal_pitch, data.gimbal_yaw),
+                    plotCurrentChart(data.current),
+                    plotVoltageChart(data.voltage),
+                    plotTemperatureChart(data.temperature)
+                ]);
+                
+                hideLoadingOverlays();
             } catch (error) {
                 console.error("Error fetching data:", error);
-                alert("Failed to load data.");
+                hideLoadingOverlays();
+                showErrorState("Failed to load data.");
             }
         }
 
+        function showLoadingOverlays() {
+            const charts = document.querySelectorAll('.chart-container');
+            charts.forEach(chart => {
+                const overlay = document.createElement('div');
+                overlay.className = 'loading-overlay';
+                overlay.innerHTML = '<div class="loading-spinner"></div>';
+                chart.style.position = 'relative';
+                chart.appendChild(overlay);
+            });
+        }
+
+        function hideLoadingOverlays() {
+            const overlays = document.querySelectorAll('.loading-overlay');
+            overlays.forEach(overlay => {
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.remove(), 300);
+            });
+        }
+
+        function showErrorState(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'alert alert-danger';
+            errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle me-2"></i>${message}`;
+            errorDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 9999;
+                background: rgba(220, 53, 69, 0.9);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                padding: 1rem 2rem;
+                backdrop-filter: blur(10px);
+            `;
+            document.body.appendChild(errorDiv);
+            
+            setTimeout(() => {
+                errorDiv.style.opacity = '0';
+                setTimeout(() => errorDiv.remove(), 300);
+            }, 5000);
+        }
+
         function plotMap(latitudes, longitudes) {
-    if (!latitudes.length || !longitudes.length) return alert("No GPS data available.");
+            if (!latitudes.length || !longitudes.length) return;
 
-    // Initialize map with Carto Positron (light base)
-    const map = L.map('map', { zoomControl: false }).setView([latitudes[0], longitudes[0]], 15);
+            // Initialize map with enhanced styling
+            const map = L.map('map', { zoomControl: false }).setView([latitudes[0], longitudes[0]], 15);
 
-    // Carto Positron Light (Best for a Lavender theme)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://carto.com/">Carto</a>',
-        subdomains: 'abcd',
-        maxZoom: 19
-    }).addTo(map);
+            // Enhanced tile layer
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://carto.com/">Carto</a>',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(map);
 
-    // Define flight path with soft lavender
-    const path = latitudes.map((lat, i) => [lat, longitudes[i]]);
-    const polyline = L.polyline(path, { color: '#fff846', weight: 3, opacity: 0.9 }).addTo(map);
+            // Enhanced flight path with gradient colors
+            const path = latitudes.map((lat, i) => [lat, longitudes[i]]);
+            const polyline = L.polyline(path, { 
+                color: '#4facfe', 
+                weight: 4, 
+                opacity: 0.8,
+                className: 'flight-path'
+            }).addTo(map);
 
-    // Mark latest drone position with a glowing lavender marker
-    const lastIndex = latitudes.length - 1;
-    L.circleMarker([latitudes[lastIndex], longitudes[lastIndex]], {
-        radius: 6,
-        fillColor: "#D8BFD8",
-        color: "#800080",
-        weight: 2,
-        opacity: 1,
-        fillOpacity: 0.9
-    }).addTo(map).bindPopup("📍 Latest Position");
+            // Enhanced marker with pulsing effect
+            const lastIndex = latitudes.length - 1;
+            const marker = L.circleMarker([latitudes[lastIndex], longitudes[lastIndex]], {
+                radius: 8,
+                fillColor: "#4facfe",
+                color: "#00f2fe",
+                weight: 3,
+                opacity: 1,
+                fillOpacity: 0.8,
+                className: 'pulse-marker'
+            }).addTo(map).bindPopup("📍 Current Position");
 
-    // Fit map to flight path
-    map.fitBounds(polyline.getBounds());
+            // Add pulsing animation
+            marker.getElement().style.animation = 'pulse 2s infinite';
 
-    // Ensure map renders properly
-    setTimeout(() => {
-        map.invalidateSize();
-    }, 500);
-}
+            // Fit map to flight path
+            map.fitBounds(polyline.getBounds());
 
-
+            // Ensure map renders properly
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 500);
+        }
 
         function createChart(container, option) {
-            let chart = echarts.init(document.getElementById(container));
-            chart.setOption(option);
+            const chart = echarts.init(document.getElementById(container), 'dark');
+            
+            // Enhanced default theme
+            const enhancedOption = {
+                ...option,
+                backgroundColor: 'transparent',
+                textStyle: {
+                    color: '#ffffff'
+                },
+                grid: {
+                    backgroundColor: 'transparent',
+                    borderColor: 'rgba(255, 255, 255, 0.1)'
+                },
+                xAxis: option.xAxis ? {
+                    ...option.xAxis,
+                    axisLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.3)' } },
+                    axisLabel: { color: 'rgba(255, 255, 255, 0.7)' }
+                } : undefined,
+                yAxis: option.yAxis ? {
+                    ...option.yAxis,
+                    axisLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.3)' } },
+                    axisLabel: { color: 'rgba(255, 255, 255, 0.7)' }
+                } : undefined,
+                animation: true,
+                animationDuration: 1000,
+                animationEasing: 'cubicOut'
+            };
+            
+            chart.setOption(enhancedOption);
+            return chart;
         }
 
         function plotBatteryChart(batteryData) {
+            const currentBattery = batteryData[batteryData.length - 1] || 0;
             createChart('batteryChart', {
-                series: [{ type: 'gauge', data: [{ value: batteryData[batteryData.length - 1], name: 'Battery (%)' }] }]
+                series: [{
+                    type: 'gauge',
+                    data: [{ 
+                        value: currentBattery, 
+                        name: 'Battery (%)',
+                        itemStyle: {
+                            color: currentBattery > 50 ? '#4facfe' : currentBattery > 20 ? '#ffa500' : '#ff4757'
+                        }
+                    }],
+                    radius: '80%',
+                    axisLine: {
+                        lineStyle: {
+                            width: 10,
+                            color: [
+                                [0.2, '#ff4757'],
+                                [0.5, '#ffa500'],
+                                [1, '#4facfe']
+                            ]
+                        }
+                    },
+                    pointer: {
+                        itemStyle: {
+                            color: '#4facfe'
+                        }
+                    },
+                    axisTick: {
+                        distance: -10,
+                        splitNumber: 5,
+                        lineStyle: {
+                            width: 2,
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        }
+                    },
+                    splitLine: {
+                        distance: -15,
+                        length: 15,
+                        lineStyle: {
+                            width: 4,
+                            color: 'rgba(255, 255, 255, 0.3)'
+                        }
+                    },
+                    axisLabel: {
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        fontSize: 12,
+                        distance: -20
+                    },
+                    detail: {
+                        valueAnimation: true,
+                        formatter: '{value}%',
+                        color: '#4facfe',
+                        fontSize: 20
+                    }
+                }]
             });
         }
 
@@ -200,26 +511,107 @@
                 xAxis: { type: 'category', data: altitude.map((_, i) => i) },
                 yAxis: { type: 'value' },
                 series: [
-                    { name: 'Altitude', type: 'line', data: altitude },
-                    { name: 'Speed N', type: 'line', data: velN },
-                    { name: 'Speed E', type: 'line', data: velE },
-                    { name: 'Speed D', type: 'line', data: velD }
-                ]
+                    { 
+                        name: 'Altitude (m)', 
+                        type: 'line', 
+                        data: altitude,
+                        smooth: true,
+                        lineStyle: { color: '#4facfe', width: 3 },
+                        itemStyle: { color: '#4facfe' },
+                        areaStyle: { 
+                            color: {
+                                type: 'linear',
+                                x: 0, y: 0, x2: 0, y2: 1,
+                                colorStops: [
+                                    { offset: 0, color: 'rgba(79, 172, 254, 0.3)' },
+                                    { offset: 1, color: 'rgba(79, 172, 254, 0.05)' }
+                                ]
+                            }
+                        }
+                    },
+                    { 
+                        name: 'Speed N', 
+                        type: 'line', 
+                        data: velN,
+                        smooth: true,
+                        lineStyle: { color: '#00f2fe', width: 2 }
+                    },
+                    { 
+                        name: 'Speed E', 
+                        type: 'line', 
+                        data: velE,
+                        smooth: true,
+                        lineStyle: { color: '#ff6b6b', width: 2 }
+                    },
+                    { 
+                        name: 'Speed D', 
+                        type: 'line', 
+                        data: velD,
+                        smooth: true,
+                        lineStyle: { color: '#4ecdc4', width: 2 }
+                    }
+                ],
+                legend: {
+                    textStyle: { color: 'rgba(255, 255, 255, 0.8)' }
+                }
             });
         }
 
         function plotIMUChart(gyroX, gyroY, gyroZ) {
+            const currentValues = [gyroX.slice(-1)[0], gyroY.slice(-1)[0], gyroZ.slice(-1)[0]];
             createChart('imuChart', {
                 xAxis: { type: 'category', data: ['Gyro X', 'Gyro Y', 'Gyro Z'] },
                 yAxis: { type: 'value' },
-                series: [{ type: 'bar', data: [gyroX.slice(-1)[0], gyroY.slice(-1)[0], gyroZ.slice(-1)[0]] }]
+                series: [{ 
+                    type: 'bar', 
+                    data: currentValues,
+                    itemStyle: {
+                        color: {
+                            type: 'linear',
+                            x: 0, y: 0, x2: 0, y2: 1,
+                            colorStops: [
+                                { offset: 0, color: '#4facfe' },
+                                { offset: 1, color: '#00f2fe' }
+                            ]
+                        }
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(79, 172, 254, 0.5)'
+                        }
+                    }
+                }]
             });
         }
 
         function plotGimbalChart(roll, pitch, yaw) {
             createChart('gimbalChart', {
-                radar: { indicator: [{ name: 'Roll' }, { name: 'Pitch' }, { name: 'Yaw' }] },
-                series: [{ type: 'radar', data: [{ value: [roll.slice(-1)[0], pitch.slice(-1)[0], yaw.slice(-1)[0]] }] }]
+                radar: { 
+                    indicator: [
+                        { name: 'Roll', max: 180 },
+                        { name: 'Pitch', max: 180 },
+                        { name: 'Yaw', max: 360 }
+                    ],
+                    axisName: {
+                        color: 'rgba(255, 255, 255, 0.7)'
+                    },
+                    splitLine: {
+                        lineStyle: { color: 'rgba(255, 255, 255, 0.2)' }
+                    },
+                    splitArea: {
+                        areaStyle: { color: ['rgba(79, 172, 254, 0.1)', 'rgba(0, 242, 254, 0.1)'] }
+                    }
+                },
+                series: [{ 
+                    type: 'radar', 
+                    data: [{ 
+                        value: [roll.slice(-1)[0], pitch.slice(-1)[0], yaw.slice(-1)[0]],
+                        name: 'Gimbal Orientation',
+                        itemStyle: { color: '#4facfe' },
+                        areaStyle: { color: 'rgba(79, 172, 254, 0.2)' }
+                    }]
+                }]
             });
         }
 
@@ -227,15 +619,55 @@
             createChart('currentChart', {
                 xAxis: { type: 'category', data: currentData.map((_, i) => i) },
                 yAxis: { type: 'value' },
-                series: [{ name: 'Current (A)', type: 'line', data: currentData }]
+                series: [{ 
+                    name: 'Current (A)', 
+                    type: 'line', 
+                    data: currentData,
+                    smooth: true,
+                    lineStyle: { color: '#ff6b6b', width: 3 },
+                    itemStyle: { color: '#ff6b6b' },
+                    areaStyle: { 
+                        color: {
+                            type: 'linear',
+                            x: 0, y: 0, x2: 0, y2: 1,
+                            colorStops: [
+                                { offset: 0, color: 'rgba(255, 107, 107, 0.3)' },
+                                { offset: 1, color: 'rgba(255, 107, 107, 0.05)' }
+                            ]
+                        }
+                    }
+                }]
             });
         }
 
         function plotVoltageChart(voltageData) {
+            const cellNames = ['Cell 1', 'Cell 2', 'Cell 3', 'Cell 4', 'Cell 5', 'Cell 6'];
+            const cellValues = Object.values(voltageData).map(v => v.slice(-1)[0]);
+            
             createChart('voltageChart', {
-                xAxis: { type: 'category', data: ['Cell 1', 'Cell 2', 'Cell 3', 'Cell 4', 'Cell 5', 'Cell 6'] },
+                xAxis: { type: 'category', data: cellNames },
                 yAxis: { type: 'value' },
-                series: [{ type: 'bar', data: Object.values(voltageData).map(v => v.slice(-1)[0]) }]
+                series: [{ 
+                    type: 'bar', 
+                    data: cellValues,
+                    itemStyle: {
+                        color: {
+                            type: 'linear',
+                            x: 0, y: 0, x2: 0, y2: 1,
+                            colorStops: [
+                                { offset: 0, color: '#4facfe' },
+                                { offset: 0.5, color: '#00f2fe' },
+                                { offset: 1, color: '#4ecdc4' }
+                            ]
+                        }
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(79, 172, 254, 0.5)'
+                        }
+                    }
+                }]
             });
         }
 
@@ -243,11 +675,47 @@
             createChart('temperatureChart', {
                 xAxis: { type: 'category', data: temperatureData.map((_, i) => i) },
                 yAxis: { type: 'value' },
-                series: [{ name: 'Battery Temp (°C)', type: 'line', data: temperatureData }]
+                series: [{ 
+                    name: 'Battery Temp (°C)', 
+                    type: 'line', 
+                    data: temperatureData,
+                    smooth: true,
+                    lineStyle: { color: '#ffa500', width: 3 },
+                    itemStyle: { color: '#ffa500' },
+                    areaStyle: { 
+                        color: {
+                            type: 'linear',
+                            x: 0, y: 0, x2: 0, y2: 1,
+                            colorStops: [
+                                { offset: 0, color: 'rgba(255, 165, 0, 0.3)' },
+                                { offset: 1, color: 'rgba(255, 165, 0, 0.05)' }
+                            ]
+                        }
+                    }
+                }]
             });
         }
 
-        fetchData();
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchData();
+            
+            // Add scroll reveal animation
+            function revealOnScroll() {
+                const reveals = document.querySelectorAll('.scroll-reveal');
+                reveals.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.classList.add('revealed');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll();
+        });
     </script>
 
 </body>
