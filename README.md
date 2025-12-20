@@ -2,29 +2,25 @@
 ## Empowering Drone Investigations with Intelligence
 
 ---
-## Application Screenshots
-
-<details>
-<summary>Click to expand screenshots</summary>
 
 <p align="center">
 
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(0).png" width="90%"><br><br>
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(1).png" width="90%"><br><br>
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(2).png" width="90%"><br><br>
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(3).png" width="90%"><br><br>
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(4).png" width="90%"><br><br>
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(5).png" width="90%"><br><br>
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(6).png" width="90%"><br><br>
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(7).png" width="90%"><br><br>
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(8).png" width="90%"><br><br>
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(9).png" width="90%"><br><br>
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(10).png" width="90%"><br><br>
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(11).png" width="90%"><br><br>
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(12).png" width="90%"><br><br>
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(13).png" width="90%"><br><br>
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(14).png" width="90%"><br><br>
-<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(15).png" width="90%">
+<img src="slides/DroneforensiQ-Tarun%20(0).png" width="95%"><br><br>
+<img src="slides/DroneforensiQ-Tarun%20(1).png" width="95%"><br><br>
+<img src="slides/DroneforensiQ-Tarun%20(2).png" width="95%"><br><br>
+<img src="slides/DroneforensiQ-Tarun%20(3).png" width="95%"><br><br>
+<img src="slides/DroneforensiQ-Tarun%20(4).png" width="95%"><br><br>
+<img src="slides/DroneforensiQ-Tarun%20(5).png" width="95%"><br><br>
+<img src="slides/DroneforensiQ-Tarun%20(6).png" width="95%"><br><br>
+<img src="slides/DroneforensiQ-Tarun%20(7).png" width="95%"><br><br>
+<img src="slides/DroneforensiQ-Tarun%20(8).png" width="95%"><br><br>
+<img src="slides/DroneforensiQ-Tarun%20(9).png" width="95%"><br><br>
+<img src="slides/DroneforensiQ-Tarun%20(10).png" width="95%"><br><br>
+<img src="slides/DroneforensiQ-Tarun%20(11).png" width="95%"><br><br>
+<img src="slides/DroneforensiQ-Tarun%20(12).png" width="95%"><br><br>
+<img src="slides/DroneforensiQ-Tarun%20(13).png" width="95%"><br><br>
+<img src="slides/DroneforensiQ-Tarun%20(14).png" width="95%"><br><br>
+<img src="slides/DroneforensiQ-Tarun%20(15).png" width="95%">
 
 </p>
 
