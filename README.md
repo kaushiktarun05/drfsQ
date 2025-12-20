@@ -2,6 +2,33 @@
 ## Empowering Drone Investigations with Intelligence
 
 ---
+## Application Screenshots
+
+<details>
+<summary>Click to expand screenshots</summary>
+
+<p align="center">
+
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(0).png" width="90%"><br><br>
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(1).png" width="90%"><br><br>
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(2).png" width="90%"><br><br>
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(3).png" width="90%"><br><br>
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(4).png" width="90%"><br><br>
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(5).png" width="90%"><br><br>
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(6).png" width="90%"><br><br>
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(7).png" width="90%"><br><br>
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(8).png" width="90%"><br><br>
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(9).png" width="90%"><br><br>
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(10).png" width="90%"><br><br>
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(11).png" width="90%"><br><br>
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(12).png" width="90%"><br><br>
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(13).png" width="90%"><br><br>
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(14).png" width="90%"><br><br>
+<img src="docs/images/screenshots/DroneforensiQ-Tarun%20(15).png" width="90%">
+
+</p>
+
+</details>
 
 ## 1. Overview
 
@@ -160,7 +187,7 @@ Each layer is isolated to ensure maintainability and forensic soundness.
 
 ---
 
-## 9. File Processing Workflow
+## File Processing Workflow
 
 DroneForensiQ implements a strict forensic workflow:
 
@@ -178,32 +205,7 @@ Original files remain untouched throughout the process.
 
 ---
 
-## 10. Supported Drone Formats
-
-### DJI
-
-- `.DAT` (E1, E2, E3, P1–P4)
-- `.TXT`
-- `.CSV`
-
-### Parrot
-
-- `.CSV`
-- `.TXT` (partial support)
-
-### Autel
-
-- `.BIN` (partial support)
-
-### Experimental / Custom UAVs
-
-- `.LOG`
-- `.CSV`
-- `.KML`
-
----
-
-## 11. Encrypted Log Handling
+## Encrypted Log Handling
 
 DroneForensiQ supports encrypted DJI E2 logs using AES-based decryption routines.
 
@@ -217,7 +219,7 @@ If encryption keys are unavailable, the system safely halts processing without d
 
 ---
 
-## 12. Telemetry Extraction
+## Telemetry Extraction
 
 Extracted telemetry includes:
 
@@ -233,18 +235,18 @@ All values are normalized into SI units for consistency.
 
 ---
 
-## 13. Visualization Engine
+## Visualization Engine
 
 DroneForensiQ provides investigator-centric visualization:
 
-### 13.1 Map-Based Reconstruction
+### Map-Based Reconstruction
 
 - Flight path overlay
 - Takeoff and landing points
 - Directional arrows
 - Hover and anomaly markers
 
-### 13.2 Time-Series Analysis
+### Time-Series Analysis
 
 - Altitude vs time
 - Speed vs time
@@ -253,7 +255,7 @@ DroneForensiQ provides investigator-centric visualization:
 
 ---
 
-## 14. REST API Design
+## REST API Design
 
 DroneForensiQ exposes RESTful APIs for automation.
 
@@ -266,7 +268,7 @@ DroneForensiQ exposes RESTful APIs for automation.
 
 ---
 
-## 15. Security Controls
+## Security Controls
 
 - Secure filename handling
 - Temporary sandboxed storage
@@ -279,24 +281,7 @@ These controls ensure legal admissibility.
 
 ---
 
-## 16. Performance Evaluation
-
-### Test Environment
-
-- Intel i7 (12th Gen)
-- 8 GB RAM
-- Ubuntu 22.04 / Windows 11
-- Python 3.11
-
-### Processing Time
-
-- DJI `.DAT`: 2–4.5 seconds
-- DJI `.TXT`: <2 seconds
-- KML export: <1 second
-
----
-
-## 17. Telemetry Accuracy
+## Telemetry Accuracy
 
 | Parameter | Deviation |
 |---------|-----------|
@@ -307,47 +292,13 @@ These controls ensure legal admissibility.
 
 ---
 
-## 18. Comparative Analysis
-
-DroneForensiQ provides:
-
-- Multi-vendor support
-- Encrypted log decoding
-- Offline analysis
-- API integration
-- Forensic hashing
-- Rich visualization
-
-Capabilities absent in most existing tools.
-
----
-
-## 19. Limitations
-
-- Limited support for newest proprietary formats
-- High memory usage for very large logs
-- Desktop-optimized UI
-
----
-
-## 20. Future Enhancements
-
-- AI-based anomaly detection
-- Real-time telemetry triage
-- Batch processing
-- Automated forensic reports
-- Case management
-- Support for military UAVs
-
----
-
-## 21. Conclusion
+## Conclusion
 
 DroneForensiQ establishes a strong foundation for open, forensic-grade drone telemetry analysis. It demonstrates how transparent, secure, and extensible tools can significantly enhance drone-related investigations in cybersecurity and law enforcement.
 
 ---
 
-## 22. Author
+## Author
 
 Tarun Kaushik  
 Cybersecurity & Digital Forensics Researcher  
@@ -355,14 +306,14 @@ National Forensic Sciences University
 
 ---
 
-## 23. License
+## License
 
 Released for research and educational purposes.  
 Operational deployment should comply with institutional policies.
 
 ---
 
-## 24. Final Note
+## Final Note
 
 DroneForensiQ aims to evolve into a standard forensic toolkit for UAV investigations, empowering analysts with accuracy, transparency, and trust.
 
